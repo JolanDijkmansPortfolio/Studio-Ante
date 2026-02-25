@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Anté · Decide before you build</title>
+  <meta name="description" content="Studio Anté helpt KMO's vage innovatie-ideeën omzetten in onderbouwde investeringsbeslissingen. Gestructureerd, snel, en onafhankelijk.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c-bg:#FAFAF8;--c-bg-warm:#F5F3EE;--c-bg-card:#FFFFFF;--c-bg-dark:#1A1D23;--c-bg-navy:#1E2A3A;
+      --c-text:#2C2C2C;--c-text-soft:#6B6B6B;--c-text-muted:#9A9A9A;--c-text-inv:#F5F3EE;
+      --c-accent:#C4841D;--c-accent-soft:#E8C888;--c-blue:#3A6B9F;--c-blue-soft:#D4E1EE;
+      --c-border:#E5E2DC;--c-border-light:#EDEAE4;--c-red-soft:#F2E0DB;--c-red:#A0523C;
+      --f-display:'Instrument Serif',Georgia,serif;--f-body:'DM Sans',-apple-system,sans-serif;
+      --s-section:clamp(80px,10vw,140px);--r-card:12px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+    body{font-family:var(--f-body);color:var(--c-text);background:var(--c-bg);line-height:1.65;font-size:16px;overflow-x:hidden}
+    img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(24px,4vw,64px)}
+    .icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 clamp(24px,4vw,64px);transition:all .4s ease;background:transparent}
+    .nav.scrolled{background:rgba(250,250,248,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--c-border-light)}
+    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
+    .nav-logo{font-family:var(--f-body);font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--c-text)}
+    .nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+    .nav-links a{font-size:14px;font-weight:500;color:var(--c-text-soft);transition:color .3s ease}
+    .nav-links a:hover{color:var(--c-text)}
+    .nav-cta{padding:10px 24px;background:var(--c-bg-dark);color:var(--c-text-inv)!important;border-radius:100px;font-size:13px!important;font-weight:600!important;transition:all .3s ease}
+    .nav-cta:hover{background:var(--c-accent);color:#fff!important}
+    .nav-mobile-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+    .nav-mobile-toggle span{display:block;width:22px;height:2px;background:var(--c-text);margin:5px 0;transition:all .3s ease}
+    .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:var(--c-bg)}
+    .hero::before{content:'';position:absolute;top:-30%;right:-20%;width:70%;height:80%;background:radial-gradient(ellipse,rgba(196,132,29,.06) 0%,transparent 70%);pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:-10%;left:-10%;width:50%;height:60%;background:radial-gradient(ellipse,rgba(58,107,159,.04) 0%,transparent 70%);pointer-events:none}
+    .hero .container{position:relative;z-index:1;padding-top:120px;padding-bottom:80px}
+    .hero-label{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent);margin-bottom:32px;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards}
+    .hero-label::before{content:'';display:block;width:28px;height:1.5px;background:var(--c-accent)}
+    .hero-title{font-family:var(--f-display);font-size:clamp(48px,7vw,88px);line-height:1.05;font-weight:400;color:var(--c-text);max-width:900px;margin-bottom:32px;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .15s both}
+    .hero-title em{font-style:italic;color:var(--c-accent)}
+    .hero-subtitle{font-size:clamp(17px,1.8vw,20px);color:var(--c-text-soft);max-width:620px;line-height:1.7;margin-bottom:48px;font-weight:300;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .3s both}
+    .hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .45s both}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:var(--c-bg-dark);color:var(--c-text-inv);border-radius:100px;font-size:15px;font-weight:600;transition:all .4s cubic-bezier(.16,1,.3,1);border:none;cursor:pointer;font-family:var(--f-body)}
+    .btn-primary:hover{background:var(--c-accent);transform:translateY(-2px);box-shadow:0 8px 30px rgba(196,132,29,.25)}
+    .btn-primary svg{width:16px;height:16px;transition:transform .3s ease}.btn-primary:hover svg{transform:translateX(3px)}
+    .btn-outline{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;background:transparent;color:var(--c-text);border-radius:100px;font-size:15px;font-weight:600;border:1.5px solid var(--c-border);transition:all .4s cubic-bezier(.16,1,.3,1);cursor:pointer;font-family:var(--f-body)}
+    .btn-outline:hover{border-color:var(--c-accent);color:var(--c-accent);transform:translateY(-2px)}
+    .btn-outline svg{width:16px;height:16px}
+    .hero-scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp 1s ease 1.2s both}
+    .hero-scroll-indicator span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-text-muted)}
+    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--c-text-muted),transparent);animation:pulse 2s ease-in-out infinite}
+    .usp-strip{border-top:1px solid var(--c-border-light);border-bottom:1px solid var(--c-border-light);background:var(--c-bg-card);padding:48px 0}
+    .usp-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:48px;align-items:center}
+    .usp-divider{width:1px;height:60px;background:var(--c-border);justify-self:center}
+    .usp-item{text-align:center;padding:0 16px}
+    .usp-item h3{font-family:var(--f-display);font-size:clamp(20px,2.5vw,26px);line-height:1.35;font-weight:400;color:var(--c-text)}
+    .usp-item h3 em{font-style:italic;color:var(--c-accent)}
+    .manifesto{background:var(--c-bg-dark);color:var(--c-text-inv);padding:80px 0;position:relative;overflow:hidden}
+    .manifesto::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(196,132,29,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 50%,rgba(58,107,159,.06) 0%,transparent 50%);pointer-events:none}
+    .manifesto .container{position:relative;z-index:1}
+    .manifesto-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px}
+    .manifesto-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--c-accent);margin-bottom:16px}
+    .manifesto-text{font-family:var(--f-display);font-size:clamp(18px,2vw,24px);line-height:1.45;font-weight:400;color:rgba(245,243,238,.9)}
+    .section{padding:var(--s-section) 0}
+    .section-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--c-accent);margin-bottom:20px}
+    .section-title{font-family:var(--f-display);font-size:clamp(32px,4.5vw,52px);line-height:1.15;font-weight:400;color:var(--c-text);max-width:700px}
+    .section-title em{font-style:italic;color:var(--c-accent)}
+    .section-subtitle{font-size:18px;color:var(--c-text-soft);max-width:600px;line-height:1.7;margin-top:20px;font-weight:300}
+    .section-header{margin-bottom:64px}
+    .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .problem-card{padding:36px 32px;border:1px solid var(--c-border);border-radius:var(--r-card);background:var(--c-bg-card);transition:all .4s cubic-bezier(.16,1,.3,1)}
+    .problem-card:hover{border-color:var(--c-accent-soft);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+    .problem-icon{width:44px;height:44px;border-radius:10px;background:var(--c-bg-warm);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--c-accent)}
+    .problem-icon svg{width:22px;height:22px}
+    .problem-card h3{font-family:var(--f-body);font-size:17px;font-weight:600;margin-bottom:10px;color:var(--c-text)}
+    .problem-card p{font-size:15px;color:var(--c-text-soft);line-height:1.65}
+    .methodology{background:var(--c-bg-warm);padding:var(--s-section) 0}
+    .method-phases{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:start;margin-top:64px}
+    .method-phase{padding:40px;border-radius:16px;background:var(--c-bg-card);border:1px solid var(--c-border)}
+    .method-phase-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:24px}
+    .phase-explore .method-phase-label{background:var(--c-blue-soft);color:var(--c-blue)}
+    .phase-decide .method-phase-label{background:rgba(196,132,29,.12);color:var(--c-accent)}
+    .method-phase h3{font-family:var(--f-display);font-size:28px;margin-bottom:16px;font-weight:400}
+    .method-phase>p{font-size:15px;color:var(--c-text-soft);line-height:1.7;margin-bottom:24px}
+    .method-steps{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .method-steps li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--c-text);line-height:1.55}
+    .method-steps .step-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+    .phase-explore .step-num{background:var(--c-blue-soft);color:var(--c-blue)}
+    .phase-decide .step-num{background:rgba(196,132,29,.12);color:var(--c-accent)}
+    .method-connector{display:flex;align-items:center;justify-content:center;padding-top:140px}
+    .method-connector-inner{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .connector-line{width:40px;height:2px;background:var(--c-border)}
+    .connector-icon{width:36px;height:36px;border-radius:50%;background:var(--c-bg-dark);display:flex;align-items:center;justify-content:center;color:var(--c-text-inv)}
+    .connector-icon svg{width:14px;height:14px}
+    .method-output{margin-top:40px;padding:32px 40px;background:var(--c-bg-dark);border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+    .method-output-left{display:flex;align-items:center;gap:20px}
+    .output-badge{flex-shrink:0;width:48px;height:48px;border-radius:12px;background:var(--c-accent);display:flex;align-items:center;justify-content:center;color:#fff}
+    .output-badge svg{width:22px;height:22px}
+    .method-output h4{font-family:var(--f-display);font-size:22px;color:var(--c-text-inv);font-weight:400;margin-bottom:4px}
+    .method-output p{font-size:14px;color:rgba(245,243,238,.6)}
+    .output-items{display:flex;gap:28px}
+    .output-item{text-align:center}
+    .output-item-icon{width:32px;height:32px;margin:0 auto 8px;color:rgba(245,243,238,.5)}
+    .output-item-icon svg{width:100%;height:100%}
+    .output-item span{display:block;font-size:12px;color:rgba(245,243,238,.5);font-weight:500;line-height:1.4}
+    .values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:56px}
+    .value-card{padding:36px;border-radius:var(--r-card);border:1px solid var(--c-border);background:var(--c-bg-card);transition:all .4s ease}
+    .value-card:hover{border-color:var(--c-accent-soft)}
+    .value-card-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+    .value-icon{width:36px;height:36px;border-radius:8px;background:var(--c-bg-warm);display:flex;align-items:center;justify-content:center;color:var(--c-accent);flex-shrink:0}
+    .value-icon svg{width:18px;height:18px}
+    .value-card h3{font-family:var(--f-body);font-size:16px;font-weight:600;color:var(--c-text)}
+    .value-card p{font-size:15px;color:var(--c-text-soft);line-height:1.65}
+    .not-us{background:var(--c-bg-warm);padding:var(--s-section) 0}
+    .not-us-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+    .not-us-card{padding:32px;border-radius:var(--r-card);border:1px solid var(--c-border);background:var(--c-bg-card)}
+    .not-us-card .not-icon{width:36px;height:36px;border-radius:8px;background:var(--c-red-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--c-red)}
+    .not-us-card .not-icon svg{width:18px;height:18px}
+    .not-us-card h3{font-size:16px;font-weight:600;margin-bottom:8px;color:var(--c-text)}
+    .not-us-card p{font-size:14px;color:var(--c-text-soft);line-height:1.65}
+    .tools-section{padding:var(--s-section) 0}
+    .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+    .tool-card{padding:40px 32px;border-radius:16px;background:var(--c-bg-card);border:1px solid var(--c-border);position:relative;overflow:hidden;text-align:center}
+    .tool-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(0,0,0,.008) 10px,rgba(0,0,0,.008) 20px);pointer-events:none}
+    .tool-coming-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:rgba(196,132,29,.1);color:var(--c-accent);margin-bottom:24px}
+    .tool-icon{width:56px;height:56px;border-radius:14px;background:var(--c-bg-warm);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:var(--c-accent)}
+    .tool-icon svg{width:26px;height:26px}
+    .tool-card h3{font-family:var(--f-display);font-size:22px;font-weight:400;margin-bottom:10px}
+    .tool-card p{font-size:14px;color:var(--c-text-soft);line-height:1.6}
+    .audience-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:56px}
+    .audience-text h3{font-family:var(--f-display);font-size:28px;font-weight:400;margin-bottom:16px}
+    .audience-text p{font-size:16px;color:var(--c-text-soft);line-height:1.7;margin-bottom:24px}
+    .audience-tags{display:flex;flex-wrap:wrap;gap:10px}
+    .audience-tag{padding:8px 18px;border-radius:100px;border:1px solid var(--c-border);font-size:13px;font-weight:500;color:var(--c-text-soft);background:var(--c-bg-card);transition:all .3s ease}
+    .audience-tag:hover{border-color:var(--c-accent);color:var(--c-accent)}
+    .audience-visual{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .audience-stat{padding:28px 24px;border-radius:var(--r-card);background:var(--c-bg-warm);border:1px solid var(--c-border-light);text-align:center}
+    .audience-stat .stat-value{font-family:var(--f-display);font-size:36px;color:var(--c-text);margin-bottom:6px}
+    .audience-stat .stat-label{font-size:12px;color:var(--c-text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+    .quiz-section{background:var(--c-bg-dark);padding:var(--s-section) 0;position:relative;overflow:hidden}
+    .quiz-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,132,29,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(58,107,159,.06) 0%,transparent 60%);pointer-events:none}
+    .quiz-section .container{position:relative;z-index:1}
+    .quiz-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+    .quiz-text .section-label{color:var(--c-accent-soft)}
+    .quiz-text .section-title{color:var(--c-text-inv);max-width:460px}
+    .quiz-text .section-subtitle{color:rgba(245,243,238,.6)}
+    .quiz-benefits{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:14px}
+    .quiz-benefits li{display:flex;align-items:center;gap:12px;font-size:15px;color:rgba(245,243,238,.8)}
+    .quiz-benefits .qb-icon{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(196,132,29,.2);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
+    .quiz-benefits .qb-icon svg{width:12px;height:12px}
+    .quiz-embed{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:40px;min-height:460px;display:flex;flex-direction:column}
+    .quiz-embed iframe{flex:1;border:none;border-radius:8px;width:100%;min-height:400px}
+    .quiz-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px}
+    .quiz-placeholder p{color:rgba(245,243,238,.5);font-size:14px;max-width:280px;line-height:1.6}
+    .quiz-placeholder .qp-icon{width:56px;height:56px;border-radius:16px;background:rgba(196,132,29,.15);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
+    .quiz-placeholder .qp-icon svg{width:28px;height:28px}
+    .cta-section{background:var(--c-bg);padding:100px 0;text-align:center}
+    .cta-title{font-family:var(--f-display);font-size:clamp(36px,5vw,56px);color:var(--c-text);line-height:1.15;margin-bottom:20px}
+    .cta-title em{font-style:italic;color:var(--c-accent)}
+    .cta-subtitle{font-size:18px;color:var(--c-text-soft);max-width:500px;margin:0 auto 40px;line-height:1.7}
+    .cta-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+    .btn-cta{display:inline-flex;align-items:center;gap:10px;padding:18px 44px;background:var(--c-accent);color:#fff;border-radius:100px;font-size:16px;font-weight:600;transition:all .4s cubic-bezier(.16,1,.3,1);border:none;cursor:pointer;font-family:var(--f-body)}
+    .btn-cta:hover{background:#D4941D;transform:translateY(-2px);box-shadow:0 12px 40px rgba(196,132,29,.35)}
+    .footer{background:var(--c-bg-dark);border-top:1px solid rgba(255,255,255,.06);padding:40px 0}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center}
+    .footer-logo{font-family:var(--f-body);font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,243,238,.5)}
+    .footer-links{display:flex;gap:28px;list-style:none}
+    .footer-links a{font-size:13px;color:rgba(245,243,238,.4);transition:color .3s}
+    .footer-links a:hover{color:var(--c-accent)}
+    @media(max-width:900px){.nav-links{display:none}.nav-mobile-toggle{display:block}.manifesto-grid,.problem-grid,.not-us-grid,.tools-grid{grid-template-columns:1fr}.method-phases{grid-template-columns:1fr;gap:24px}.method-connector{padding:0;transform:rotate(90deg)}.values-grid{grid-template-columns:1fr}.audience-layout,.quiz-layout{grid-template-columns:1fr;gap:40px}.usp-grid{grid-template-columns:1fr;gap:24px}.usp-divider{width:60px;height:1px}.method-output{flex-direction:column;text-align:center}.output-items{flex-wrap:wrap;justify-content:center}.footer-inner{flex-direction:column;gap:20px;text-align:center}}
+    @media(max-width:600px){.hero-actions{flex-direction:column;align-items:flex-start}.audience-visual{grid-template-columns:1fr}.cta-actions{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav"><div class="nav-inner"><a href="#" class="nav-logo">Studio Anté</a><ul class="nav-links"><li><a href="#probleem">Het Probleem</a></li><li><a href="#methode">Methode</a></li><li><a href="#waarom">Waarom Wij</a></li><li><a href="#tools">Tools</a></li><li><a href="#quiz">Innovatie-check</a></li><li><a href="#contact" class="nav-cta">Gesprek plannen</a></li></ul><button class="nav-mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+
+  <section class="hero" id="hero"><div class="container">
+    <div class="hero-label">Pre-investment innovation voor producten, diensten &amp; systemen</div>
+    <h1 class="hero-title"><em>Decide</em> before<br>you build.</h1>
+    <p class="hero-subtitle">Vlaamse KMO's verliezen tienduizenden euro's aan innovatie-investeringen die falen. Niet omdat producten slecht worden gebouwd, maar omdat de verkeerde producten worden gebouwd. Wij veranderen dat.</p>
+    <div class="hero-actions">
+      <a href="mailto:jolan.dijkmans@gmail.com?subject=Studio%20Ant%C3%A9%20%E2%80%93%20Intake%20aanvraag" class="btn-primary">Plan een gesprek <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#quiz" class="btn-outline"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"/><path d="M10 10l7-7"/><path d="M13 3h4v4"/></svg> Doe de innovatie-check</a>
+    </div>
+  </div><div class="hero-scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div></section>
+
+  <section class="usp-strip"><div class="container"><div class="usp-grid reveal">
+    <div class="usp-item"><h3>Bespaar tienduizenden euro's aan <em>verkeerde investeringen</em> door de juiste keuze te maken vóór u bouwt.</h3></div>
+    <div class="usp-divider"></div>
+    <div class="usp-item"><h3>Geen bureau, geen consultant. Een <em>gestandaardiseerde methode</em> die in 4–6 weken van vaag idee naar onderbouwde beslissing gaat.</h3></div>
+  </div></div></section>
+
+  <section class="manifesto"><div class="container"><div class="manifesto-grid">
+    <div class="manifesto-item reveal"><div class="manifesto-label">Visie</div><p class="manifesto-text">Wij willen de manier veranderen waarop innovatie tot stand komt. Toegankelijker, sneller, data-gedreven. Zodat elke KMO met zekerheid kan innoveren.</p></div>
+    <div class="manifesto-item reveal reveal-delay-1"><div class="manifesto-label">Aanpak</div><p class="manifesto-text">Door het innovatieproces te standaardiseren, analyse op schaal in te zetten, en radicaal onafhankelijk te blijven van uitvoering.</p></div>
+    <div class="manifesto-item reveal reveal-delay-2"><div class="manifesto-label">Aanbod</div><p class="manifesto-text">Een methodologische innovatiesprint waarin bedrijven opportuniteiten evolueren naar concrete producten, diensten of systeemconcepten.</p></div>
+  </div></div></section>
+
+  <section class="section" id="probleem"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Het Probleem</div><h2 class="section-title">KMO's investeren blind,<br>of <em>investeren niet.</em></h2><p class="section-subtitle">Het beslissingsmoment vóór de investering is het meest kritieke en meest verwaarloosde punt in het hele productontwikkelingsproces.</p></div>
+    <div class="problem-grid">
+      <div class="problem-card reveal"><div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 16v.01M12 8v4"/></svg></div><h3>Geen scherp concept</h3><p>Er is een idee of ambitie, maar geen gestructureerde manier om dit te vertalen naar vergelijkbare, onderbouwde concepten voor een product, dienst of systeem.</p></div>
+      <div class="problem-card reveal reveal-delay-1"><div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><h3>Investeringsrisico van €50K–€250K+</h3><p>Investeren op basis van onderbuikgevoel. Of helemaal niet investeren uit angst. Beide kosten tienduizenden euro's aan gemiste kansen of verkeerde keuzes.</p></div>
+      <div class="problem-card reveal reveal-delay-2"><div class="problem-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></div><h3>Geen passend aanbod</h3><p>Grote bureaus zijn onbetaalbaar (€100K+). Freelancers missen systematiek. Consultants leveren rapporten, geen richtingen. Er bestaat geen betaalbaar alternatief.</p></div>
+    </div>
+  </div></section>
+
+  <section class="methodology" id="methode"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Onze Methode</div><h2 class="section-title">Van vaag idee naar<br><em>onderbouwde keuze</em></h2><p class="section-subtitle">Een vaste methodiek in twee fasen. Gestandaardiseerd proces, unieke invulling per project. Resultaat in 4–6 weken.</p></div>
+    <div class="method-phases">
+      <div class="method-phase phase-explore reveal"><span class="method-phase-label">Fase 1 · Ontdekken</span><h3>Verkennen &amp; structureren</h3><p>We brengen het innovatievraagstuk in kaart, verzamelen stakeholder-perspectieven, en maken kansen en kaders zichtbaar. Het resultaat: een gedeeld, helder probleemkader.</p><ul class="method-steps"><li><span class="step-num">1</span><span>Probleemstructurering &amp; intake</span></li><li><span class="step-num">2</span><span>Stakeholder-input &amp; alignment mapping</span></li><li><span class="step-num">3</span><span>Kansen, constraints &amp; kaders in kaart</span></li></ul></div>
+      <div class="method-connector reveal reveal-delay-2"><div class="method-connector-inner"><div class="connector-line"></div><div class="connector-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div><div class="connector-line"></div></div></div>
+      <div class="method-phase phase-decide reveal reveal-delay-3"><span class="method-phase-label">Fase 2 · Beslissen</span><h3>Concepten &amp; keuze</h3><p>We genereren concrete conceptrichtingen voor producten, diensten of systemen, werken deze visueel uit, en onderbouwen systematisch welk concept de beste investering is.</p><ul class="method-steps"><li><span class="step-num">4</span><span>Conceptgeneratie &amp; visuele scenario's</span></li><li><span class="step-num">5</span><span>Systematische trade-off analyse</span></li><li><span class="step-num">6</span><span>Aanbeveling &amp; overdracht</span></li></ul></div>
+    </div>
+    <div class="method-output reveal"><div class="method-output-left"><div class="output-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div><div><h4>Eén onderbouwde aanbeveling</h4><p>Het uitvoerend bureau ontvangt een kant-en-klaar startpakket in hun taal. U hoeft daar niets van te merken.</p></div></div><div class="output-items"><div class="output-item"><div class="output-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h6"/></svg></div><span>Trade-off<br>analyse</span></div><div class="output-item"><div class="output-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><span>Visuele<br>scenario's</span></div><div class="output-item"><div class="output-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg></div><span>Startpakket<br>voor bureau</span></div></div></div>
+  </div></section>
+
+  <section class="section" id="waarom"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Waarom Studio Anté</div><h2 class="section-title">Niet het bureau dat bouwt.<br>Het bureau dat <em>de juiste keuze</em> maakt.</h2></div>
+    <div class="values-grid">
+      <div class="value-card reveal"><div class="value-card-header"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div><h3>Risicoreductie</h3></div><p>Investeer op basis van onderbouwing, niet op onderbuikgevoel. Ons proces is ontworpen om het risico op een verkeerde investering te minimaliseren. Bespaar tienduizenden euro's door eerst te valideren.</p></div>
+      <div class="value-card reveal reveal-delay-1"><div class="value-card-header"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>Snelheid</h3></div><p>Weken in plaats van maanden. Een gestandaardiseerd proces betekent dat we snel schakelen zonder aan kwaliteit in te boeten. In 4–6 weken van vraag naar antwoord.</p></div>
+      <div class="value-card reveal reveal-delay-2"><div class="value-card-header"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></div><h3>Onafhankelijk</h3></div><p>Wij bouwen niet, dus wij adviseren neutraal. Geen belang bij de duurdere optie. Geen lock-in. Na ons traject staat u er sterker voor, niet afhankelijker.</p></div>
+      <div class="value-card reveal reveal-delay-3"><div class="value-card-header"><div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg></div><h3>Vlotte overdracht</h3></div><p>Het uitvoerend bureau ontvangt een kant-en-klaar startpakket in hun taal. U kiest het bureau, wij zorgen dat zij direct kunnen starten. Geen vertaalslag, geen frictie.</p></div>
+    </div>
+  </div></section>
+
+  <section class="not-us" id="niet"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Wat wij niet zijn</div><h2 class="section-title">Helder over onze <em>grenzen</em></h2><p class="section-subtitle">We doen heel bewust niet alles. Door onze scope scherp te houden, leveren we maximale waarde op het moment dat het ertoe doet.</p></div>
+    <div class="not-us-grid">
+      <div class="not-us-card reveal"><div class="not-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></div><h3>Geen ontwerpbureau</h3><p>Wij tekenen geen producten. Wij bepalen wát er getekend moet worden. Wij zitten vóór het ontwerpbureau, niet ernaast.</p></div>
+      <div class="not-us-card reveal reveal-delay-1"><div class="not-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></div><h3>Geen consultant</h3><p>Wij leveren geen rapporten die in een la eindigen. Wij leveren visuele concepten, een systematische analyse, en een concrete beslissing.</p></div>
+      <div class="not-us-card reveal reveal-delay-2"><div class="not-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></div><h3>Geen marktonderzoeker</h3><p>Wij starten waar het onderzoek stopt. Bij de vertaling van probleem of opportuniteit naar concept en keuze. Het marktonderzoek komt vóór ons.</p></div>
+    </div>
+  </div></section>
+
+  <section class="tools-section" id="tools"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Onze Tools</div><h2 class="section-title">Technologie die het proces<br><em>sneller en scherper</em> maakt</h2><p class="section-subtitle">We bouwen tools die elke stap van onze methodiek ondersteunen. Gestandaardiseerd, data-gedreven, en op termijn beschikbaar als standalone producten.</p></div>
+    <div class="tools-grid">
+      <div class="tool-card reveal"><span class="tool-coming-badge">Coming Soon</span><div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3>Stakeholder Pulse</h3><p>Digitale bevraging die consensus, conflict, en blinde vlekken in kaart brengt vóór het traject begint.</p></div>
+      <div class="tool-card reveal reveal-delay-1"><span class="tool-coming-badge">Coming Soon</span><div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-8"/></svg></div><h3>Trade-Off Engine</h3><p>Interactieve beslissingstool die criteria weegt, scenario's vergelijkt, en de onderbouwing transparant maakt.</p></div>
+      <div class="tool-card reveal reveal-delay-2"><span class="tool-coming-badge">Coming Soon</span><div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Confidence Score</h3><p>Een validatiescore die aangeeft hoe goed onderbouwd uw investeringsbeslissing is. Van onderbuik naar onderbouwing.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section" id="doelgroep"><div class="container">
+    <div class="section-header reveal"><div class="section-label">Voor Wie</div><h2 class="section-title">Gebouwd voor het <em>beslissingsmoment</em></h2></div>
+    <div class="audience-layout">
+      <div class="audience-text reveal"><h3>Sector-agnostisch. Moment-specifiek.</h3><p>Onze niche is geen sector. Het is een moment. Het kritieke punt vóór een grote investerings- of ontwikkelingsbeslissing, wanneer er een idee is maar nog geen richting.</p><p>We werken met zaakvoerders, projectleiders en innovatieverantwoordelijken die het gevoel herkennen: "We moeten iets doen, maar we weten nog niet wát."</p><div class="audience-tags"><span class="audience-tag">Zaakvoerders</span><span class="audience-tag">Projectleiders</span><span class="audience-tag">Innovatiemanagers</span><span class="audience-tag">10–250 FTE</span><span class="audience-tag">Vlaamse KMO's</span></div></div>
+      <div class="audience-visual reveal reveal-delay-2"><div class="audience-stat"><div class="stat-value">4–6</div><div class="stat-label">Weken doorlooptijd</div></div><div class="audience-stat"><div class="stat-value">3</div><div class="stat-label">Conceptscenario's</div></div><div class="audience-stat"><div class="stat-value">1</div><div class="stat-label">Onderbouwde keuze</div></div><div class="audience-stat"><div class="stat-value">0</div><div class="stat-label">Afhankelijkheid</div></div></div>
+    </div>
+  </div></section>
+
+  <section class="quiz-section" id="quiz"><div class="container"><div class="quiz-layout">
+    <div class="quiz-text reveal"><div class="section-label">Innovatie-check</div><h2 class="section-title">Hoe onderbouwd zijn <em>uw innovatiebeslissingen?</em></h2><p class="section-subtitle">Beantwoord 5 korte vragen en ontdek waar uw organisatie staat. Gratis, anoniem, en u ontvangt onze innovatie-checklist.</p><ul class="quiz-benefits"><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Duurt minder dan 2 minuten</li><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Ontvang gratis innovatie-checklist</li><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Geen verplichtingen</li></ul></div>
+    <div class="quiz-embed reveal reveal-delay-2">
+      <!-- TALLY FORM: Replace the placeholder below with your Tally embed. See TALLY_SETUP.md -->
+      <div class="quiz-placeholder"><div class="qp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div><p>Quiz wordt geladen...<br><br><a href="mailto:jolan.dijkmans@gmail.com?subject=Innovatie-check%20aanvraag" style="color:var(--c-accent);">Liever direct contact? Mail ons.</a></p></div>
+    </div>
+  </div></div></section>
+
+  <section class="cta-section" id="contact"><div class="container">
+    <h2 class="cta-title reveal">Klaar om <em>met zekerheid</em><br>te investeren?</h2>
+    <p class="cta-subtitle reveal reveal-delay-1">Plan een vrijblijvend gesprek. We bekijken samen of ons traject past bij uw situatie.</p>
+    <div class="cta-actions reveal reveal-delay-2">
+      <a href="mailto:jolan.dijkmans@gmail.com?subject=Studio%20Ant%C3%A9%20%E2%80%93%20Intake%20aanvraag" class="btn-cta">Plan een intake <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#quiz" class="btn-outline" style="border-color:var(--c-border);color:var(--c-text-soft);">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"/><path d="M10 10l7-7"/><path d="M13 3h4v4"/></svg>Doe eerst de innovatie-check</a>
+    </div>
+  </div></section>
+
+  <footer class="footer"><div class="container"><div class="footer-inner"><div class="footer-logo">Studio Anté © 2026</div><ul class="footer-links"><li><a href="#methode">Methode</a></li><li><a href="#waarom">Waarom Wij</a></li><li><a href="#tools">Tools</a></li><li><a href="mailto:jolan.dijkmans@gmail.com">Contact</a></li></ul></div></div></footer>
+
+  <script>
+    const reveals=document.querySelectorAll('.reveal');const observer=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});reveals.forEach(e=>observer.observe(e));
+    const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)});
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+    document.getElementById('mobileToggle').addEventListener('click',()=>{const l=document.querySelector('.nav-links');if(l.style.display==='flex'){l.style.display='none'}else{l.style.display='flex';l.style.flexDirection='column';l.style.position='absolute';l.style.top='72px';l.style.right='24px';l.style.background='var(--c-bg)';l.style.padding='24px';l.style.borderRadius='12px';l.style.boxShadow='0 8px 40px rgba(0,0,0,.1)';l.style.gap='16px'}});
+  </script>
+</body>
+</html>
