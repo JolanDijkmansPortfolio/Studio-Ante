@@ -136,32 +136,36 @@
     .tool-icon svg{width:26px;height:26px}
     .tool-card h3{font-family:var(--f-display);font-size:22px;font-weight:400;margin-bottom:10px}
     .tool-card p{font-size:14px;color:var(--c-text-soft);line-height:1.6}
+    .audience-section{background:var(--c-bg-dark);padding:var(--s-section) 0;position:relative;overflow:hidden}
+    .audience-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,132,29,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(58,107,159,.06) 0%,transparent 60%);pointer-events:none}
+    .audience-section .container{position:relative;z-index:1}
+    .audience-section .section-label{color:var(--c-accent-soft)}
+    .audience-section .section-title{color:var(--c-text-inv)}
     .audience-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:56px}
-    .audience-text h3{font-family:var(--f-display);font-size:28px;font-weight:400;margin-bottom:16px}
-    .audience-text p{font-size:16px;color:var(--c-text-soft);line-height:1.7;margin-bottom:24px}
+    .audience-text h3{font-family:var(--f-display);font-size:28px;font-weight:400;margin-bottom:16px;color:var(--c-text-inv)}
+    .audience-text p{font-size:16px;color:rgba(245,243,238,.65);line-height:1.7;margin-bottom:24px}
     .audience-tags{display:flex;flex-wrap:wrap;gap:10px}
-    .audience-tag{padding:8px 18px;border-radius:100px;border:1px solid var(--c-border);font-size:13px;font-weight:500;color:var(--c-text-soft);background:var(--c-bg-card);transition:all .3s ease}
+    .audience-tag{padding:8px 18px;border-radius:100px;border:1px solid rgba(255,255,255,.15);font-size:13px;font-weight:500;color:rgba(245,243,238,.6);background:transparent;transition:all .3s ease}
     .audience-tag:hover{border-color:var(--c-accent);color:var(--c-accent)}
     .audience-visual{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .audience-stat{padding:28px 24px;border-radius:var(--r-card);background:var(--c-bg-warm);border:1px solid var(--c-border-light);text-align:center}
-    .audience-stat .stat-value{font-family:var(--f-display);font-size:36px;color:var(--c-text);margin-bottom:6px}
-    .audience-stat .stat-label{font-size:12px;color:var(--c-text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-    .quiz-section{background:var(--c-bg-dark);padding:var(--s-section) 0;position:relative;overflow:hidden}
-    .quiz-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(196,132,29,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(58,107,159,.06) 0%,transparent 60%);pointer-events:none}
+    .audience-stat{padding:28px 24px;border-radius:var(--r-card);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);text-align:center}
+    .audience-stat .stat-value{font-family:var(--f-display);font-size:36px;color:var(--c-text-inv);margin-bottom:6px}
+    .audience-stat .stat-label{font-size:12px;color:rgba(245,243,238,.4);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+    .quiz-section{background:var(--c-bg-warm);padding:var(--s-section) 0;position:relative;overflow:hidden}
     .quiz-section .container{position:relative;z-index:1}
     .quiz-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-    .quiz-text .section-label{color:var(--c-accent-soft)}
-    .quiz-text .section-title{color:var(--c-text-inv);max-width:460px}
-    .quiz-text .section-subtitle{color:rgba(245,243,238,.6)}
+    .quiz-text .section-label{color:var(--c-accent)}
+    .quiz-text .section-title{color:var(--c-text);max-width:460px}
+    .quiz-text .section-subtitle{color:var(--c-text-soft)}
     .quiz-benefits{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:14px}
-    .quiz-benefits li{display:flex;align-items:center;gap:12px;font-size:15px;color:rgba(245,243,238,.8)}
-    .quiz-benefits .qb-icon{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(196,132,29,.2);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
+    .quiz-benefits li{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--c-text)}
+    .quiz-benefits .qb-icon{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(196,132,29,.12);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
     .quiz-benefits .qb-icon svg{width:12px;height:12px}
-    .quiz-embed{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:40px;min-height:460px;display:flex;flex-direction:column}
+    .quiz-embed{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:16px;padding:24px;min-height:500px;display:flex;flex-direction:column}
     .quiz-embed iframe{flex:1;border:none;border-radius:8px;width:100%;min-height:400px}
     .quiz-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px}
-    .quiz-placeholder p{color:rgba(245,243,238,.5);font-size:14px;max-width:280px;line-height:1.6}
-    .quiz-placeholder .qp-icon{width:56px;height:56px;border-radius:16px;background:rgba(196,132,29,.15);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
+    .quiz-placeholder p{color:var(--c-text-muted);font-size:14px;max-width:280px;line-height:1.6}
+    .quiz-placeholder .qp-icon{width:56px;height:56px;border-radius:16px;background:rgba(196,132,29,.1);color:var(--c-accent);display:flex;align-items:center;justify-content:center}
     .quiz-placeholder .qp-icon svg{width:28px;height:28px}
     .cta-section{background:var(--c-bg);padding:100px 0;text-align:center}
     .cta-title{font-family:var(--f-display);font-size:clamp(36px,5vw,56px);color:var(--c-text);line-height:1.15;margin-bottom:20px}
@@ -252,7 +256,7 @@
     </div>
   </div></section>
 
-  <section class="section" id="doelgroep"><div class="container">
+  <section class="audience-section" id="doelgroep"><div class="container">
     <div class="section-header reveal"><div class="section-label">Voor Wie</div><h2 class="section-title">Gebouwd voor het <em>beslissingsmoment</em></h2></div>
     <div class="audience-layout">
       <div class="audience-text reveal"><h3>Sector-agnostisch. Moment-specifiek.</h3><p>Onze niche is geen sector. Het is een moment. Het kritieke punt vóór een grote investerings- of ontwikkelingsbeslissing, wanneer er een idee is maar nog geen richting.</p><p>We werken met zaakvoerders, projectleiders en innovatieverantwoordelijken die het gevoel herkennen: "We moeten iets doen, maar we weten nog niet wát."</p><div class="audience-tags"><span class="audience-tag">Zaakvoerders</span><span class="audience-tag">Projectleiders</span><span class="audience-tag">Innovatiemanagers</span><span class="audience-tag">10–250 FTE</span><span class="audience-tag">Vlaamse KMO's</span></div></div>
@@ -263,15 +267,14 @@
   <section class="quiz-section" id="quiz"><div class="container"><div class="quiz-layout">
     <div class="quiz-text reveal"><div class="section-label">Innovatie-check</div><h2 class="section-title">Hoe onderbouwd zijn <em>uw innovatiebeslissingen?</em></h2><p class="section-subtitle">Beantwoord 5 korte vragen en ontdek waar uw organisatie staat. Gratis, anoniem, en u ontvangt onze innovatie-checklist.</p><ul class="quiz-benefits"><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Duurt minder dan 2 minuten</li><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Ontvang gratis innovatie-checklist</li><li><span class="qb-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3 3 7-7"/></svg></span>Geen verplichtingen</li></ul></div>
     <div class="quiz-embed reveal reveal-delay-2">
-      <!-- TALLY FORM: Replace the placeholder below with your Tally embed. See TALLY_SETUP.md -->
-      <iframe
-  data-tally-src="https://tally.so/embed/obA9D5?alignLeft=1&hideTitle=1&dynamicHeight=1"
-  loading="lazy"
-  width="100%"
-  height="400"
-  frameborder="0"
-  title="Innovatie-check"
-></iframe>
+      <!-- TALLY FORM: Replace the placeholder below with your Tally embed.
+           Use: transparentBackground=1 so the form blends with the light background.
+           See TALLY_SETUP.md for full instructions.
+           Example:
+           <iframe data-tally-src="https://tally.so/embed/YOUR_FORM_ID?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="500" frameborder="0" title="Innovatie-check"></iframe>
+      -->
+      <div class="quiz-placeholder"><div class="qp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div><p>Quiz wordt geladen...<br><br><a href="mailto:jolan.dijkmans@gmail.com?subject=Innovatie-check%20aanvraag" style="color:var(--c-accent);">Liever direct contact? Mail ons.</a></p></div>
+    </div>
   </div></div></section>
 
   <section class="cta-section" id="contact"><div class="container">
@@ -286,13 +289,6 @@
 
   <footer class="footer"><div class="container"><div class="footer-inner"><div class="footer-logo">Studio Anté © 2026</div><ul class="footer-links"><li><a href="#methode">Methode</a></li><li><a href="#waarom">Waarom Wij</a></li><li><a href="#tools">Tools</a></li><li><a href="mailto:jolan.dijkmans@gmail.com">Contact</a></li></ul></div></div></footer>
 
-<script>
-var d=document,w="https://tally.so/widgets/embed.js",v=function(){
-"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e){e.src=e.dataset.tallySrc})
-};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w;s.onload=v;s.onerror=v;d.body.appendChild(s)}
-</script>
-
-  
   <script>
     const reveals=document.querySelectorAll('.reveal');const observer=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});reveals.forEach(e=>observer.observe(e));
     const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)});
