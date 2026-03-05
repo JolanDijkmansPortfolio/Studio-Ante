@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Anté · Platform — VerpakPlus NV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c-bg:#FAFAF8;--c-bg-warm:#F5F3EE;--c-bg-card:#FFFFFF;--c-bg-dark:#1A1D23;--c-bg-navy:#1E2A3A;
+  --c-text:#2C2C2C;--c-text-soft:#6B6B6B;--c-text-muted:#9A9A9A;--c-text-inv:#F5F3EE;
+  --c-accent:#C4841D;--c-accent-soft:#E8C888;--c-accent-pale:rgba(196,132,29,.08);
+  --c-blue:#3A6B9F;--c-blue-soft:#D4E1EE;--c-blue-pale:rgba(58,107,159,.06);
+  --c-border:#E5E2DC;--c-border-light:#EDEAE4;
+  --c-red:#A0523C;--c-red-soft:#F2E0DB;
+  --c-green:#3D7C4F;--c-green-soft:#E2F0E5;
+  --f-display:'Instrument Serif',Georgia,serif;
+  --f-body:'DM Sans',-apple-system,sans-serif;
+  --r-card:12px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--f-body);color:var(--c-text);background:var(--c-bg-warm);line-height:1.6;font-size:15px;overflow-x:hidden;}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:320px;min-width:320px;background:var(--c-bg-dark);color:var(--c-text-inv);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;
+  overflow-y:auto;
+}
+.sidebar-header{padding:28px 28px 20px;border-bottom:1px solid rgba(255,255,255,.06);}
+.sidebar-logo{font-family:var(--f-body);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent-soft);margin-bottom:16px;}
+.sidebar-project{font-family:var(--f-display);font-size:22px;color:var(--c-text-inv);line-height:1.25;margin-bottom:6px;}
+.sidebar-client{font-size:13px;color:rgba(245,243,238,.45);font-weight:400;}
+
+.sidebar-progress{padding:20px 28px;border-bottom:1px solid rgba(255,255,255,.06);}
+.progress-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,243,238,.4);margin-bottom:10px;}
+.progress-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--c-accent),var(--c-accent-soft));border-radius:3px;transition:width .6s cubic-bezier(.16,1,.3,1);}
+.progress-text{font-size:12px;color:rgba(245,243,238,.5);margin-top:8px;}
+
+/* ── STEP NAV ── */
+.step-nav{flex:1;padding:16px 0;}
+.step-nav-item{
+  display:flex;align-items:flex-start;gap:14px;padding:14px 28px;cursor:pointer;
+  transition:all .25s ease;position:relative;
+}
+.step-nav-item:hover{background:rgba(255,255,255,.04);}
+.step-nav-item.active{background:rgba(196,132,29,.1);}
+.step-nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c-accent);border-radius:0 3px 3px 0;}
+
+.step-indicator{
+  width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:11px;font-weight:700;margin-top:2px;transition:all .3s ease;
+}
+.step-indicator.completed{background:var(--c-green);color:#fff;}
+.step-indicator.active-ind{background:var(--c-accent);color:#fff;box-shadow:0 0 0 4px rgba(196,132,29,.2);}
+.step-indicator.locked{background:rgba(255,255,255,.06);color:rgba(255,255,255,.25);border:1.5px dashed rgba(255,255,255,.15);}
+
+.step-info .step-name{font-size:13.5px;font-weight:600;color:var(--c-text-inv);line-height:1.3;}
+.step-info .step-meta{font-size:11px;color:rgba(245,243,238,.35);margin-top:2px;}
+.step-nav-item.locked-item .step-info .step-name{color:rgba(245,243,238,.3);}
+.step-nav-item.locked-item{cursor:default;}
+
+.step-duration{
+  margin-left:auto;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;
+  white-space:nowrap;flex-shrink:0;margin-top:4px;
+}
+.step-duration.dur-ante{background:rgba(196,132,29,.15);color:var(--c-accent-soft);}
+.step-duration.dur-samen{background:rgba(58,107,159,.15);color:var(--c-blue-soft);}
+.step-duration.dur-onb{background:rgba(255,255,255,.06);color:rgba(245,243,238,.35);}
+
+.sidebar-footer{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(245,243,238,.25);}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:320px;flex:1;min-height:100vh;}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:var(--c-bg-card);border-bottom:1px solid var(--c-border-light);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:40;
+}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-phase{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c-accent);}
+.topbar-step{font-family:var(--f-display);font-size:20px;color:var(--c-text);}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px;
+}
+.status-completed{background:var(--c-green-soft);color:var(--c-green);}
+.status-active{background:var(--c-accent-pale);color:var(--c-accent);}
+.status-locked{background:var(--c-bg-warm);color:var(--c-text-muted);}
+.status-dot{width:7px;height:7px;border-radius:50%;}
+.status-dot.dot-green{background:var(--c-green);}
+.status-dot.dot-amber{background:var(--c-accent);animation:pulse-dot 2s infinite;}
+.status-dot.dot-gray{background:var(--c-text-muted);}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ── CONTENT AREA ── */
+.content{padding:40px;}
+.content-max{max-width:960px;}
+
+/* ── STEP HEADER ── */
+.step-header{margin-bottom:36px;}
+.step-header .sh-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--c-accent);margin-bottom:12px;}
+.step-header h1{font-family:var(--f-display);font-size:clamp(28px,3.5vw,38px);line-height:1.15;font-weight:400;color:var(--c-text);margin-bottom:12px;}
+.step-header h1 em{font-style:italic;color:var(--c-accent);}
+.step-header .sh-desc{font-size:16px;color:var(--c-text-soft);max-width:640px;line-height:1.7;font-weight:300;}
+
+/* ── CARDS ── */
+.card{background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-card);padding:28px 32px;margin-bottom:20px;transition:all .3s ease;}
+.card:hover{box-shadow:var(--shadow-md);}
+.card-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-icon.ci-amber{background:var(--c-accent-pale);color:var(--c-accent);}
+.card-icon.ci-blue{background:var(--c-blue-pale);color:var(--c-blue);}
+.card-icon.ci-green{background:var(--c-green-soft);color:var(--c-green);}
+.card-icon.ci-dark{background:var(--c-bg-dark);color:var(--c-text-inv);}
+.card-title{font-family:var(--f-body);font-size:16px;font-weight:600;color:var(--c-text);}
+.card-subtitle{font-size:13px;color:var(--c-text-muted);margin-top:2px;}
+.card p{font-size:14px;color:var(--c-text-soft);line-height:1.7;}
+
+/* ── FINDINGS ── */
+.findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.finding{padding:20px;background:var(--c-bg-warm);border-radius:8px;border-left:3px solid var(--c-accent);}
+.finding .f-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-accent);margin-bottom:6px;}
+.finding .f-text{font-size:13.5px;color:var(--c-text);line-height:1.55;}
+
+/* ── QUOTES ── */
+.quote-card{padding:20px 24px;background:var(--c-bg-warm);border-radius:8px;margin-top:12px;position:relative;}
+.quote-card::before{content:'"';font-family:var(--f-display);font-size:48px;color:var(--c-accent);opacity:.3;position:absolute;top:4px;left:16px;line-height:1;}
+.quote-text{font-family:var(--f-display);font-size:15px;color:var(--c-text);line-height:1.55;padding-left:28px;font-style:italic;}
+.quote-author{font-size:12px;color:var(--c-text-muted);margin-top:8px;padding-left:28px;}
+
+/* ── STATS ROW ── */
+.stats-row{display:flex;gap:16px;margin-top:20px;}
+.stat-box{flex:1;padding:16px 20px;background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:8px;text-align:center;}
+.stat-box .sb-val{font-family:var(--f-display);font-size:24px;color:var(--c-accent);}
+.stat-box .sb-lbl{font-size:11px;color:var(--c-text-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-top:2px;}
+
+/* ── LOCKED OVERLAY ── */
+.locked-content{position:relative;}
+.locked-content::after{
+  content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(245,243,238,.3) 0%,rgba(245,243,238,.95) 100%);
+  border-radius:var(--r-card);pointer-events:none;
+}
+.locked-badge{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;
+  background:var(--c-bg-card);border:1.5px solid var(--c-border);border-radius:100px;
+  padding:12px 28px;display:flex;align-items:center;gap:10px;
+  box-shadow:var(--shadow-md);
+}
+.locked-badge svg{width:18px;height:18px;color:var(--c-text-muted);}
+.locked-badge span{font-size:13px;font-weight:600;color:var(--c-text-soft);}
+
+/* ── NEXT STEP CTA ── */
+.next-cta{
+  margin-top:32px;padding:28px 32px;
+  background:var(--c-bg-dark);border-radius:var(--r-card);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.next-cta-text h3{font-family:var(--f-display);font-size:18px;color:var(--c-text-inv);margin-bottom:4px;}
+.next-cta-text p{font-size:13px;color:rgba(245,243,238,.5);}
+.next-cta-btn{
+  padding:12px 28px;background:var(--c-accent);color:#fff;border-radius:100px;
+  font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:var(--f-body);
+  transition:all .3s ease;display:inline-flex;align-items:center;gap:8px;
+}
+.next-cta-btn:hover{background:#d4941d;transform:translateY(-1px);}
+.next-cta-btn svg{width:14px;height:14px;}
+
+/* ── TRADE-OFF TOOL ── */
+.tradeoff-container{margin-top:24px;}
+.criteria-section{margin-bottom:24px;}
+.criteria-title{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-text-muted);margin-bottom:16px;}
+.criterion-row{
+  display:flex;align-items:center;gap:16px;padding:14px 0;
+  border-bottom:1px solid var(--c-border-light);
+}
+.criterion-label{width:180px;flex-shrink:0;}
+.criterion-label .cl-name{font-size:14px;font-weight:600;color:var(--c-text);}
+.criterion-label .cl-desc{font-size:11px;color:var(--c-text-muted);margin-top:1px;}
+.criterion-slider{flex:1;display:flex;align-items:center;gap:12px;}
+.criterion-slider input[type=range]{
+  flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;
+  background:var(--c-border);outline:none;
+}
+.criterion-slider input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--c-accent);cursor:pointer;box-shadow:0 2px 6px rgba(196,132,29,.3);
+}
+.criterion-weight{
+  width:40px;text-align:center;font-size:14px;font-weight:700;color:var(--c-accent);
+}
+.client-criteria-note{
+  padding:16px 20px;background:var(--c-blue-pale);border:1px dashed var(--c-blue-soft);
+  border-radius:8px;margin-top:12px;font-size:12px;color:var(--c-blue);line-height:1.6;
+}
+
+/* Results */
+.tradeoff-results{margin-top:32px;}
+.concept-result{
+  display:flex;align-items:center;gap:20px;padding:20px 24px;
+  background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-card);
+  margin-bottom:12px;transition:all .4s ease;
+}
+.concept-result.winner{border-color:var(--c-accent);background:linear-gradient(135deg,var(--c-bg-card) 0%,rgba(196,132,29,.04) 100%);box-shadow:0 4px 20px rgba(196,132,29,.1);}
+.concept-result.winner .cr-rank{background:var(--c-accent);color:#fff;}
+.cr-rank{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-size:18px;flex-shrink:0;
+  background:var(--c-bg-warm);color:var(--c-text-soft);
+}
+.cr-info{flex:1;}
+.cr-name{font-size:16px;font-weight:600;color:var(--c-text);}
+.cr-subtitle{font-size:12px;color:var(--c-text-muted);margin-top:1px;}
+.cr-bar-container{flex:2;display:flex;align-items:center;gap:12px;}
+.cr-bar{flex:1;height:12px;background:var(--c-bg-warm);border-radius:6px;overflow:hidden;}
+.cr-bar-fill{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.16,1,.3,1);}
+.cr-bar-fill.fill-1{background:linear-gradient(90deg,var(--c-accent),var(--c-accent-soft));}
+.cr-bar-fill.fill-2{background:linear-gradient(90deg,var(--c-blue),var(--c-blue-soft));}
+.cr-bar-fill.fill-3{background:linear-gradient(90deg,var(--c-green),var(--c-green-soft));}
+.cr-score{font-family:var(--f-display);font-size:22px;color:var(--c-text);width:50px;text-align:right;}
+
+/* Radar mini */
+.tradeoff-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px;}
+.td-concept{padding:20px;background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:8px;text-align:center;}
+.td-concept h4{font-family:var(--f-display);font-size:16px;margin-bottom:12px;}
+.td-scores{display:flex;flex-direction:column;gap:6px;}
+.td-score-row{display:flex;align-items:center;gap:8px;font-size:12px;}
+.td-score-label{width:100px;text-align:left;color:var(--c-text-soft);}
+.td-score-bar{flex:1;height:8px;background:var(--c-bg-warm);border-radius:4px;overflow:hidden;}
+.td-score-fill{height:100%;border-radius:4px;background:var(--c-accent);}
+.td-score-val{width:28px;text-align:right;font-weight:600;color:var(--c-text);font-size:12px;}
+
+/* ── SYSTEM MAP VISUAL ── */
+.system-map{
+  padding:32px;background:var(--c-bg-card);border:1px solid var(--c-border);border-radius:var(--r-card);
+  text-align:center;margin-top:16px;
+}
+.system-map svg{max-width:100%;height:auto;}
+
+/* ── CONCEPT CARDS ── */
+.concepts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px;}
+.concept-card{
+  padding:24px;background:var(--c-bg-card);border:1px solid var(--c-border);
+  border-radius:var(--r-card);transition:all .3s ease;
+}
+.concept-card:hover{border-color:var(--c-accent-soft);transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.concept-card .cc-num{
+  font-family:var(--f-display);font-size:28px;color:var(--c-accent);margin-bottom:8px;
+}
+.concept-card h3{font-size:15px;font-weight:600;margin-bottom:8px;}
+.concept-card p{font-size:13px;color:var(--c-text-soft);line-height:1.6;}
+.concept-card .cc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.concept-card .cc-tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;background:var(--c-accent-pale);color:var(--c-accent);}
+
+/* ── DELIVERABLE CARDS ── */
+.deliverable-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.del-card{padding:24px;background:var(--c-bg-dark);border-radius:var(--r-card);color:var(--c-text-inv);}
+.del-card h3{font-family:var(--f-display);font-size:17px;color:var(--c-accent-soft);margin-bottom:8px;}
+.del-card p{font-size:13px;color:rgba(245,243,238,.6);line-height:1.6;}
+
+/* ── HIDDEN SECTIONS ── */
+.step-content{display:none;}
+.step-content.visible{display:block;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.step-content.visible{animation:fadeIn .5s cubic-bezier(.16,1,.3,1);}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Studio Anté · Platform</div>
+    <div class="sidebar-project">VerpakPlus NV</div>
+    <div class="sidebar-client">Project: Innovatietraject Verpakkingslijn 2026</div>
+  </div>
+
+  <div class="sidebar-progress">
+    <div class="progress-label">Trajectvoortgang</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:68%;"></div></div>
+    <div class="progress-text">Stap 6 van 8 — <strong style="color:var(--c-accent-soft)">Conceptontwikkeling</strong></div>
+  </div>
+
+  <nav class="step-nav" id="stepNav">
+    <div class="step-nav-item active" data-step="1" onclick="showStep(1)">
+      <div class="step-indicator completed">✓</div>
+      <div class="step-info"><div class="step-name">Kennismaking & Intake</div><div class="step-meta">Afgerond · 12 feb</div></div>
+      <div class="step-duration dur-samen">½ d.</div>
+    </div>
+    <div class="step-nav-item" data-step="2" onclick="showStep(2)">
+      <div class="step-indicator completed">✓</div>
+      <div class="step-info"><div class="step-name">Interviews & Data</div><div class="step-meta">Afgerond · 17 feb</div></div>
+      <div class="step-duration dur-ante">3 d.</div>
+    </div>
+    <div class="step-nav-item" data-step="3" onclick="showStep(3)">
+      <div class="step-indicator completed">✓</div>
+      <div class="step-info"><div class="step-name">Analyse Map</div><div class="step-meta">Afgerond · 20 feb</div></div>
+      <div class="step-duration dur-ante">3 d.</div>
+    </div>
+    <div class="step-nav-item" data-step="4" onclick="showStep(4)">
+      <div class="step-indicator completed">✓</div>
+      <div class="step-info"><div class="step-name">Probleemkeuze</div><div class="step-meta">Afgerond · 21 feb</div></div>
+      <div class="step-duration dur-samen">½ d.</div>
+    </div>
+    <div class="step-nav-item" data-step="5" onclick="showStep(5)">
+      <div class="step-indicator completed">✓</div>
+      <div class="step-info"><div class="step-name">Brainstorm & Deelvragen</div><div class="step-meta">Afgerond · 25 feb</div></div>
+      <div class="step-duration dur-ante">3 d.</div>
+    </div>
+    <div class="step-nav-item" data-step="6" onclick="showStep(6)">
+      <div class="step-indicator active-ind">6</div>
+      <div class="step-info"><div class="step-name">Conceptontwikkeling</div><div class="step-meta">Actief — bezig</div></div>
+      <div class="step-duration dur-ante">3 d.</div>
+    </div>
+    <div class="step-nav-item locked-item" data-step="7" onclick="showStep(7)">
+      <div class="step-indicator locked">7</div>
+      <div class="step-info"><div class="step-name">Epic Trade-off</div><div class="step-meta">Binnenkort</div></div>
+      <div class="step-duration dur-ante">0 d.</div>
+    </div>
+    <div class="step-nav-item locked-item" data-step="8" onclick="showStep(8)">
+      <div class="step-indicator locked">8</div>
+      <div class="step-info"><div class="step-name">Handover & Afsluiting</div><div class="step-meta">Binnenkort</div></div>
+      <div class="step-duration dur-ante">2 d.</div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    © 2026 Studio Anté · Alle data is vertrouwelijk<br>
+    Contactpersonen: Justin Lefebvre & Jolan Dijkmans
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main">
+
+<!-- ─── STEP 1: KENNISMAKING ─── -->
+<div class="step-content visible" id="step-1">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 1 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-completed"><div class="status-dot dot-green"></div>Afgerond</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Kennismaking & Intake</div>
+      <h1>Het startpunt van uw <em>innovatietraject</em></h1>
+      <p class="sh-desc">Tijdens de intake hebben we uw bedrijf, team en innovatie-ambitie in kaart gebracht. U heeft uw scope bevestigd en we hebben samen de planning vastgelegd.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-amber">📋</div><div><div class="card-title">Projectoverzicht</div><div class="card-subtitle">Bevestigd op 12 februari 2026</div></div></div>
+      <div class="findings-grid">
+        <div class="finding"><div class="f-label">Bedrijf</div><div class="f-text">VerpakPlus NV — 85 medewerkers, gevestigd in Mechelen. Gespecialiseerd in industriële verpakkingsoplossingen voor food & pharma.</div></div>
+        <div class="finding"><div class="f-label">Innovatie-ambitie</div><div class="f-text">Nieuwe verpakkingslijn ontwikkelen die inspeelt op marktverschuivingen. Budget voorzien: €150.000–€300.000 voor realisatie.</div></div>
+        <div class="finding"><div class="f-label">Team</div><div class="f-text">Tom Verhoeven (COO, projectverantwoordelijke), Sarah De Groot (R&D Manager), Marc Willems (Sales Director), Linda Peeters (Operations).</div></div>
+        <div class="finding"><div class="f-label">Scope</div><div class="f-text">Product, dienst of systeem — alle richtingen open. Geen vooraf bepaalde oplossing. Doel: onderbouwde keuze vóór investering.</div></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="sb-val">85</div><div class="sb-lbl">Medewerkers</div></div>
+      <div class="stat-box"><div class="sb-val">4</div><div class="sb-lbl">Teamleden</div></div>
+      <div class="stat-box"><div class="sb-val">€150K+</div><div class="sb-lbl">Voorzien budget</div></div>
+      <div class="stat-box"><div class="sb-val">3–4 wk</div><div class="sb-lbl">Doorlooptijd</div></div>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Interviews & Data</h3><p>Wij gaan in gesprek met uw klanten en bevragen uw team op schaal.</p></div>
+      <button class="next-cta-btn" onclick="showStep(2)">Bekijk stap 2 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 2: INTERVIEWS ─── -->
+<div class="step-content" id="step-2">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 2 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-completed"><div class="status-dot dot-green"></div>Afgerond</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Interviews & Data</div>
+      <h1>Wat uw klanten en team <em>écht denken</em></h1>
+      <p class="sh-desc">We voerden 6 diepte-interviews met uw klanten en een grootschalige bevraging onder 52 medewerkers. Hieronder de kerninzichten.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="sb-val">6</div><div class="sb-lbl">Diepte-interviews</div></div>
+      <div class="stat-box"><div class="sb-val">52</div><div class="sb-lbl">Werknemers bevraagd</div></div>
+      <div class="stat-box"><div class="sb-val">23</div><div class="sb-lbl">Unieke pijnpunten</div></div>
+      <div class="stat-box"><div class="sb-val">4</div><div class="sb-lbl">Kernthema's</div></div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header"><div class="card-icon ci-blue">👥</div><div><div class="card-title">Klantinterviews — Kerninzichten</div><div class="card-subtitle">6 gesprekken met eindklanten in food & pharma</div></div></div>
+      <div class="findings-grid">
+        <div class="finding"><div class="f-label">Duurzaamheidsdruk</div><div class="f-text">5 van 6 klanten geven aan binnen 2 jaar over te moeten stappen naar duurzamere verpakking. Regelgeving drijft dit, niet voorkeur.</div></div>
+        <div class="finding"><div class="f-label">Traceerbaarheid</div><div class="f-text">Pharma-klanten hebben acute behoefte aan track-and-trace op verpakkingsniveau. Dit is nu een handmatig proces met hoge foutmarge.</div></div>
+        <div class="finding"><div class="f-label">Prijsgevoeligheid</div><div class="f-text">Food-klanten zijn bereid 10–15% meer te betalen voor duurzaamheid, maar niet meer. Premium-positionering heeft een plafond.</div></div>
+        <div class="finding"><div class="f-label">Leversnelheid</div><div class="f-text">3 van 6 klanten noemen levertijd als top-3 frustratie. Huidige doorlooptijd van 6 weken wordt als "onacceptabel" ervaren.</div></div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">Als VerpakPlus morgen met een duurzame lijn komt die dezelfde levertijden haalt, schakelen wij direct over. Maar het moet betaalbaar blijven.</div>
+      <div class="quote-author">— Inkoopmanager, klant in food-sector</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">Wij gooien letterlijk dozen weg omdat de batch-tracking niet klopt. Elke leverancier die dat oplost, wint onze business.</div>
+      <div class="quote-author">— Quality Manager, klant in pharma-sector</div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header"><div class="card-icon ci-amber">📊</div><div><div class="card-title">Teambevraging — Top bevindingen</div><div class="card-subtitle">52 werknemers, alle afdelingen</div></div></div>
+      <div class="findings-grid">
+        <div class="finding"><div class="f-label">72% eens</div><div class="f-text">"Onze huidige productlijn is binnen 3 jaar niet meer concurrentieel als we niet innoveren."</div></div>
+        <div class="finding"><div class="f-label">Intern conflict</div><div class="f-text">Sales wil premium-uitbreiding, R&D wil technologische vernieuwing, Operations wil procesoptimalisatie. Geen gedeelde visie.</div></div>
+      </div>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Analyse Map</h3><p>Alle data wordt vertaald naar een visuele kaart van problemen, kansen en relaties.</p></div>
+      <button class="next-cta-btn" onclick="showStep(3)">Bekijk stap 3 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 3: ANALYSE MAP ─── -->
+<div class="step-content" id="step-3">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 3 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-completed"><div class="status-dot dot-green"></div>Afgerond</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Analyse Map</div>
+      <h1>Het volledige beeld, <em>visueel samengevat</em></h1>
+      <p class="sh-desc">Alle interviewdata en bevragingsresultaten vertaald naar een systeem map. U ziet hier de relaties tussen problemen, stakeholders en kansen.</p>
+    </div>
+
+    <div class="system-map">
+      <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="800" height="400" fill="#FAFAF8" rx="8"/>
+        <!-- Title -->
+        <text x="400" y="30" font-family="Instrument Serif" font-size="18" fill="#2C2C2C" text-anchor="middle">Systeem Map — VerpakPlus NV</text>
+
+        <!-- Central problem cluster -->
+        <circle cx="400" cy="200" r="55" fill="rgba(196,132,29,.08)" stroke="#C4841D" stroke-width="1.5"/>
+        <text x="400" y="195" font-family="DM Sans" font-size="11" fill="#C4841D" text-anchor="middle" font-weight="600">Kernvraag</text>
+        <text x="400" y="210" font-family="DM Sans" font-size="9" fill="#6B6B6B" text-anchor="middle">Welke richting voor</text>
+        <text x="400" y="222" font-family="DM Sans" font-size="9" fill="#6B6B6B" text-anchor="middle">de nieuwe lijn?</text>
+
+        <!-- Problem nodes -->
+        <circle cx="180" cy="120" r="38" fill="rgba(160,82,60,.06)" stroke="#A0523C" stroke-width="1"/>
+        <text x="180" y="116" font-family="DM Sans" font-size="9" fill="#A0523C" text-anchor="middle" font-weight="600">Duurzaamheids-</text>
+        <text x="180" y="128" font-family="DM Sans" font-size="9" fill="#A0523C" text-anchor="middle" font-weight="600">druk</text>
+
+        <circle cx="620" cy="120" r="38" fill="rgba(58,107,159,.06)" stroke="#3A6B9F" stroke-width="1"/>
+        <text x="620" y="116" font-family="DM Sans" font-size="9" fill="#3A6B9F" text-anchor="middle" font-weight="600">Traceerbaarheid</text>
+        <text x="620" y="128" font-family="DM Sans" font-size="9" fill="#3A6B9F" text-anchor="middle" font-weight="600">& IoT</text>
+
+        <circle cx="180" cy="300" r="38" fill="rgba(61,124,79,.06)" stroke="#3D7C4F" stroke-width="1"/>
+        <text x="180" y="296" font-family="DM Sans" font-size="9" fill="#3D7C4F" text-anchor="middle" font-weight="600">Levertijd</text>
+        <text x="180" y="308" font-family="DM Sans" font-size="9" fill="#3D7C4F" text-anchor="middle" font-weight="600">& efficiëntie</text>
+
+        <circle cx="620" cy="300" r="38" fill="rgba(196,132,29,.06)" stroke="#C4841D" stroke-width="1"/>
+        <text x="620" y="296" font-family="DM Sans" font-size="9" fill="#C4841D" text-anchor="middle" font-weight="600">Premium</text>
+        <text x="620" y="308" font-family="DM Sans" font-size="9" fill="#C4841D" text-anchor="middle" font-weight="600">positionering</text>
+
+        <!-- Stakeholder nodes -->
+        <rect x="50" y="190" width="80" height="28" rx="14" fill="#E5E2DC" stroke="none"/>
+        <text x="90" y="208" font-family="DM Sans" font-size="9" fill="#6B6B6B" text-anchor="middle">Food-klanten</text>
+
+        <rect x="670" y="190" width="90" height="28" rx="14" fill="#E5E2DC" stroke="none"/>
+        <text x="715" y="208" font-family="DM Sans" font-size="9" fill="#6B6B6B" text-anchor="middle">Pharma-klanten</text>
+
+        <rect x="350" y="355" width="100" height="28" rx="14" fill="#E5E2DC" stroke="none"/>
+        <text x="400" y="373" font-family="DM Sans" font-size="9" fill="#6B6B6B" text-anchor="middle">Intern team</text>
+
+        <!-- Connection lines -->
+        <line x1="218" y1="120" x2="345" y2="180" stroke="#E5E2DC" stroke-width="1.5"/>
+        <line x1="582" y1="120" x2="455" y2="180" stroke="#E5E2DC" stroke-width="1.5"/>
+        <line x1="218" y1="300" x2="345" y2="220" stroke="#E5E2DC" stroke-width="1.5"/>
+        <line x1="582" y1="300" x2="455" y2="220" stroke="#E5E2DC" stroke-width="1.5"/>
+        <line x1="130" y1="204" x2="180" y2="158" stroke="#E5E2DC" stroke-width="1"/>
+        <line x1="130" y1="204" x2="180" y2="262" stroke="#E5E2DC" stroke-width="1"/>
+        <line x1="670" y1="204" x2="620" y2="158" stroke="#E5E2DC" stroke-width="1"/>
+        <line x1="400" y1="355" x2="400" y2="255" stroke="#E5E2DC" stroke-width="1"/>
+
+        <!-- Highlighted connection (strongest) -->
+        <line x1="218" y1="130" x2="345" y2="185" stroke="#C4841D" stroke-width="2.5" opacity=".3"/>
+        <line x1="582" y1="130" x2="455" y2="185" stroke="#C4841D" stroke-width="2.5" opacity=".3"/>
+
+        <!-- Legend -->
+        <circle cx="60" cy="380" r="5" fill="#A0523C" opacity=".3"/>
+        <text x="72" y="384" font-family="DM Sans" font-size="8" fill="#9A9A9A">Probleem</text>
+        <rect x="130" y="375" width="12" height="12" rx="6" fill="#E5E2DC"/>
+        <text x="148" y="384" font-family="DM Sans" font-size="8" fill="#9A9A9A">Stakeholder</text>
+        <line x1="220" y1="381" x2="240" y2="381" stroke="#C4841D" stroke-width="2"/>
+        <text x="248" y="384" font-family="DM Sans" font-size="8" fill="#9A9A9A">Sterkste relatie</text>
+      </svg>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header"><div class="card-icon ci-amber">🔍</div><div><div class="card-title">Samenvatting Analyse</div></div></div>
+      <p>Uit de data komen vier duidelijke probleemclusters naar voren, met twee dominante krachten: de duurzaamheidsdruk vanuit regelgeving (vooral food-klanten) en de traceerbaarheidsbehoefte (vooral pharma-klanten). De levertijd is een universele frustratie maar eerder een symptoom van verouderde processen dan een zelfstandig probleem. Premium-positionering heeft een beperkt draagvlak — klanten zijn bereid iets meer te betalen, maar niet structureel meer.</p>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Probleemkeuze</h3><p>Samen met u kiezen we welk specifiek probleem we gaan aanpakken — gestuurd door deze data.</p></div>
+      <button class="next-cta-btn" onclick="showStep(4)">Bekijk stap 4 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 4: PROBLEEMKEUZE ─── -->
+<div class="step-content" id="step-4">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 4 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-completed"><div class="status-dot dot-green"></div>Afgerond</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Probleemkeuze</div>
+      <h1>Samen gekozen: <em>één scherp probleem</em></h1>
+      <p class="sh-desc">Op basis van de Analyse Map heeft u samen met ons gekozen welk probleem we verder uitwerken. Dit werd het vertrekpunt voor de conceptgeneratie.</p>
+    </div>
+
+    <div class="card" style="border-color:var(--c-accent);border-width:2px;">
+      <div class="card-header"><div class="card-icon ci-dark">🎯</div><div><div class="card-title">Gekozen Probleem</div><div class="card-subtitle">Geselecteerd op 21 februari — sessie met Tom, Sarah & Marc</div></div></div>
+      <p style="font-family:var(--f-display);font-size:18px;color:var(--c-text);line-height:1.5;margin-bottom:16px;">
+        "Hoe kan VerpakPlus een nieuwe verpakkingslijn ontwikkelen die tegemoetkomt aan de duurzaamheidseisen van de markt, terwijl de levertijd en kosten concurrentieel blijven?"
+      </p>
+      <div class="findings-grid">
+        <div class="finding"><div class="f-label">Scope — Wel</div><div class="f-text">Materiaalinnovatie, procesinnovatie, klantinterface (bestelsysteem), duurzaamheidscertificering, levertijdverkorting.</div></div>
+        <div class="finding"><div class="f-label">Scope — Niet</div><div class="f-text">Volledige fabrieksautomatisering, internationale expansie, B2C-markt, branding/marketing.</div></div>
+        <div class="finding"><div class="f-label">Deelproblemen</div><div class="f-text">A: Materiaalsubstitutie<br>B: Productieproces aanpassing<br>C: Klantervaringslaag (bestel & track)<br>D: Certificering & compliance</div></div>
+        <div class="finding"><div class="f-label">Waarom dit probleem</div><div class="f-text">Hoogste urgentie (regelgeving 2027), breedste draagvlak bij klanten (5/6 interviews), en grootste impact op omzet (geschat 35% van klantenbestand).</div></div>
+      </div>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Brainstorm & Deelvragen</h3><p>Het gekozen probleem wordt opgesplitst in deelvragen en we starten een gestructureerde brainstorm.</p></div>
+      <button class="next-cta-btn" onclick="showStep(5)">Bekijk stap 5 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 5: BRAINSTORM & DEELVRAGEN (NIEUW) ─── -->
+<div class="step-content" id="step-5">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 5 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-completed"><div class="status-dot dot-green"></div>Afgerond</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Brainstorm & Deelvragen</div>
+      <h1>Van probleem naar <em>oplossingsruimte</em></h1>
+      <p class="sh-desc">Het gekozen probleem werd opgesplitst in concrete deelvragen. Per deelvraag voerden we een gestructureerde brainstorm uit — de bouwblokken voor de drie concepten.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-amber">🧩</div><div><div class="card-title">Deelproblemen & "Hoe kunnen we..."-vragen</div><div class="card-subtitle">Afgeleid uit de probleemdefinitie en scope</div></div></div>
+      <p style="margin-bottom:16px;">Het hoofdprobleem werd opgedeeld in vier concrete deelvragen. Elke deelvraag is een as van de morfologische kaart — per as worden meerdere oplossingsrichtingen verkend. De combinatie levert de totaalconcepten op.</p>
+      <div class="findings-grid">
+        <div class="finding" style="border-left-color:#3D7C4F;">
+          <div class="f-label">Deelvraag A — Materiaal</div>
+          <div class="f-text">"Hoe kunnen we onze materialen substitueren zodat we voldoen aan de duurzaamheidseisen van 2027, zonder de productkwaliteit te verliezen?"</div>
+        </div>
+        <div class="finding" style="border-left-color:#3A6B9F;">
+          <div class="f-label">Deelvraag B — Productieproces</div>
+          <div class="f-text">"Hoe kunnen we ons productieproces aanpassen zodat de levertijd van 6 naar 3 weken gaat, met behoud van marge?"</div>
+        </div>
+        <div class="finding" style="border-left-color:#C4841D;">
+          <div class="f-label">Deelvraag C — Klantervaring</div>
+          <div class="f-text">"Hoe kunnen we een bestel- en trackingsysteem ontwikkelen dat de traceerbaarheidsbehoefte van pharma-klanten oplost?"</div>
+        </div>
+        <div class="finding" style="border-left-color:#A0523C;">
+          <div class="f-label">Deelvraag D — Certificering</div>
+          <div class="f-text">"Hoe kunnen we de compliance-certificering stroomlijnen zodat het geen bottleneck wordt bij de lancering van de nieuwe lijn?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-blue">💡</div><div><div class="card-title">Brainstorm — Resultaten</div><div class="card-subtitle">Gestructureerde ideegeneratie met 12 teamleden</div></div></div>
+      <p style="margin-bottom:16px;">Per deelvraag werden 8–15 ideeën gegenereerd. De ideeën werden geclusterd, gewogen op haalbaarheid en impact, en gecombineerd tot drie samenhangende conceptrichtingen.</p>
+      <div class="stats-row" style="margin-top:0;">
+        <div class="stat-box"><div class="sb-val">4</div><div class="sb-lbl">Deelvragen</div></div>
+        <div class="stat-box"><div class="sb-val">47</div><div class="sb-lbl">Ideeën gegenereerd</div></div>
+        <div class="stat-box"><div class="sb-val">12</div><div class="sb-lbl">Deelnemers brainstorm</div></div>
+        <div class="stat-box"><div class="sb-val">3</div><div class="sb-lbl">Conceptcombinaties</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon ci-dark">📐</div><div><div class="card-title">Morfologische Kaart — Overzicht</div><div class="card-subtitle">Combinaties die de drie concepten vormen</div></div></div>
+      <div style="overflow-x:auto;margin-top:12px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--c-border);">
+              <th style="text-align:left;padding:10px 12px;font-weight:600;color:var(--c-text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;">Deelvraag</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:600;color:#3D7C4F;font-size:11px;">Concept 1 — EcoPack</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:600;color:#3A6B9F;font-size:11px;">Concept 2 — SmartWrap</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:600;color:#C4841D;font-size:11px;">Concept 3 — FlexLine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--c-border-light);">
+              <td style="padding:10px 12px;font-weight:500;">A. Materiaal</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(61,124,79,.04);border-radius:4px;">100% bio-based</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(58,107,159,.04);border-radius:4px;">Huidig + NFC-laag</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(196,132,29,.04);border-radius:4px;">Bio food / smart pharma</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--c-border-light);">
+              <td style="padding:10px 12px;font-weight:500;">B. Productie</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(61,124,79,.04);border-radius:4px;">Nieuwe lijn naast bestaand</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(58,107,159,.04);border-radius:4px;">Retrofit bestaande lijn</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(196,132,29,.04);border-radius:4px;">Modulaire cellen</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--c-border-light);">
+              <td style="padding:10px 12px;font-weight:500;">C. Klantervaring</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(61,124,79,.04);border-radius:4px;">Eco-label dashboard</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(58,107,159,.04);border-radius:4px;">Real-time track & trace</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(196,132,29,.04);border-radius:4px;">Sector-specifiek portaal</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 12px;font-weight:500;">D. Certificering</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(61,124,79,.04);border-radius:4px;">EU Green Deal alignment</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(58,107,159,.04);border-radius:4px;">GMP+ digitale audit trail</td>
+              <td style="padding:10px 12px;text-align:center;background:rgba(196,132,29,.04);border-radius:4px;">Beide trajecten parallel</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Conceptontwikkeling</h3><p>De drie combinaties worden visueel uitgewerkt tot concrete conceptscenario's.</p></div>
+      <button class="next-cta-btn" onclick="showStep(6)">Bekijk stap 6 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 6: CONCEPTONTWIKKELING (ACTIEF) ─── -->
+<div class="step-content" id="step-6">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 6 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-active"><div class="status-dot dot-amber"></div>Actief — in uitvoering</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Conceptontwikkeling</div>
+      <h1>Drie richtingen voor <em>uw toekomst</em></h1>
+      <p class="sh-desc">Op basis van de probleemkeuze en deelproblemen werken wij drie fundamenteel verschillende concepten uit. Elk concept is een ander scenario voor uw nieuwe verpakkingslijn.</p>
+    </div>
+
+    <div class="concepts-grid">
+      <div class="concept-card">
+        <div class="cc-num">1</div>
+        <h3>EcoPack — De Groene Lijn</h3>
+        <img src="concept1.png" alt="EcoPack concept" style="width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--c-border-light);">
+        <p>Volledige overstap naar biogebaseerde materialen. Hogere materiaalkosten, maar premium-positionering en compliance-voordeel. Levertijd vergelijkbaar met huidige lijn.</p>
+        <div class="cc-tags"><span class="cc-tag">Duurzaam</span><span class="cc-tag">Materiaal-innovatie</span><span class="cc-tag">Compliance-proof</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">2</div>
+        <h3>SmartWrap — De Slimme Lijn</h3>
+        <img src="concept2.png" alt="SmartWrap concept" style="width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--c-border-light);">
+        <p>Integratie van QR/NFC-tracking op verpakkingsniveau. Lost traceerbaarheid op voor pharma. Beperkte materiaalinnovatie, maar sterke tech-differentiatie en 40% snellere levertijd.</p>
+        <div class="cc-tags"><span class="cc-tag">IoT</span><span class="cc-tag">Track & Trace</span><span class="cc-tag">Sneller</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">3</div>
+        <h3>FlexLine — De Hybride Lijn</h3>
+        <img src="concept3.png" alt="FlexLine concept" style="width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--c-border-light);">
+        <p>Modulaire aanpak: duurzaam materiaal waar nodig (food), smart tracking waar nodig (pharma). Hogere initiële investering, maar breedst inzetbaar en laagste risico.</p>
+        <div class="cc-tags"><span class="cc-tag">Modulair</span><span class="cc-tag">Breed inzetbaar</span><span class="cc-tag">Toekomstbestendig</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;background:var(--c-accent-pale);border-color:rgba(196,132,29,.15);">
+      <div class="card-header"><div class="card-icon ci-amber">⏳</div><div><div class="card-title">Wat gebeurt er nu?</div></div></div>
+      <p>Wij werken elk concept visueel uit met renders, processchema's en specificaties. U ontvangt een presentatie van de drie concepten zodra deze klaar zijn. Daarna volgt de Epic Trade-off: een data-gedreven vergelijking waarmee u de beste keuze maakt.</p>
+    </div>
+
+    <div class="next-cta">
+      <div class="next-cta-text"><h3>Volgende stap: Epic Trade-off</h3><p>De interactieve beslissingstool waarmee u de drie concepten objectief vergelijkt.</p></div>
+      <button class="next-cta-btn" onclick="showStep(7)">Preview bekijken <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 7: EPIC TRADE-OFF (INTERACTIEF!) ─── -->
+<div class="step-content" id="step-7">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 7 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-locked"><div class="status-dot dot-gray"></div>Preview — beschikbaar na stap 5</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Epic Trade-off</div>
+      <h1>Data-gedreven <em>beslissing</em></h1>
+      <p class="sh-desc">De drie concepten worden systematisch vergeleken op gewogen criteria. Pas de gewichten aan en zie in real-time welk concept het beste scoort voor uw situatie.</p>
+    </div>
+
+    <!-- INTERACTIVE TRADE-OFF -->
+    <div class="tradeoff-container">
+
+      <div class="criteria-section">
+        <div class="criteria-title">Standaard Criteria — Pas gewichten aan</div>
+
+        <div class="criterion-row">
+          <div class="criterion-label"><div class="cl-name">Haalbaarheid</div><div class="cl-desc">Technisch realiseerbaar met huidige capaciteit?</div></div>
+          <div class="criterion-slider"><input type="range" min="1" max="10" value="7" oninput="updateTradeoff()"><div class="criterion-weight" id="w-haalbaarheid">7</div></div>
+        </div>
+
+        <div class="criterion-row">
+          <div class="criterion-label"><div class="cl-name">Wenselijkheid</div><div class="cl-desc">Sluit aan bij echte klantbehoeften?</div></div>
+          <div class="criterion-slider"><input type="range" min="1" max="10" value="9" oninput="updateTradeoff()"><div class="criterion-weight" id="w-wenselijkheid">9</div></div>
+        </div>
+
+        <div class="criterion-row">
+          <div class="criterion-label"><div class="cl-name">Levensvatbaarheid</div><div class="cl-desc">Financieel rendabel en schaalbaar?</div></div>
+          <div class="criterion-slider"><input type="range" min="1" max="10" value="8" oninput="updateTradeoff()"><div class="criterion-weight" id="w-levensvatbaarheid">8</div></div>
+        </div>
+
+        <div class="criterion-row">
+          <div class="criterion-label"><div class="cl-name">Tijdsdruk</div><div class="cl-desc">Snel genoeg om aan regelgeving 2027 te voldoen?</div></div>
+          <div class="criterion-slider"><input type="range" min="1" max="10" value="6" oninput="updateTradeoff()"><div class="criterion-weight" id="w-tijdsdruk">6</div></div>
+        </div>
+
+        <div class="criterion-row">
+          <div class="criterion-label"><div class="cl-name">Risico</div><div class="cl-desc">Laag implementatierisico en beperkte onzekerheid?</div></div>
+          <div class="criterion-slider"><input type="range" min="1" max="10" value="5" oninput="updateTradeoff()"><div class="criterion-weight" id="w-risico">5</div></div>
+        </div>
+
+        <div class="client-criteria-note">
+          <strong>Klant-specifieke criteria</strong> — In het volledige traject worden hier aanvullende criteria toegevoegd die specifiek zijn voor uw bedrijf en situatie. Denk aan: merkpositionering, interne draagkracht, leveranciersrelaties, subsidie-eligibiliteit, etc.
+        </div>
+      </div>
+
+      <div class="tradeoff-results">
+        <div class="criteria-title">Resultaat — Rangschikking</div>
+        <div id="tradeoffResults"></div>
+      </div>
+
+      <div class="tradeoff-detail" id="tradeoffDetail"></div>
+
+    </div>
+
+    <div class="next-cta" style="margin-top:36px;">
+      <div class="next-cta-text"><h3>Na de keuze: Handover & Afsluiting</h3><p>Het gekozen concept wordt verder uitgewerkt en overgedragen aan uw realisatiepartner.</p></div>
+      <button class="next-cta-btn" onclick="showStep(8)">Preview bekijken <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+    </div>
+  </div></div>
+</div>
+
+<!-- ─── STEP 8: HANDOVER (LOCKED) ─── -->
+<div class="step-content" id="step-8">
+  <div class="topbar">
+    <div class="topbar-left"><span class="topbar-phase">Stap 8 van 8</span></div>
+    <div class="topbar-right"><div class="topbar-status status-locked"><div class="status-dot dot-gray"></div>Vergrendeld — na Trade-off</div></div>
+  </div>
+  <div class="content"><div class="content-max">
+    <div class="step-header">
+      <div class="sh-label">Handover & Afsluiting</div>
+      <h1>Klaar om te <em>bouwen</em></h1>
+      <p class="sh-desc">Na de finale keuze ontvangt u het complete Blueprint-Pakket waarmee u direct naar uw realisatiepartner kunt stappen.</p>
+    </div>
+
+    <div style="position:relative;">
+      <div class="locked-content">
+        <div class="deliverable-grid">
+          <div class="del-card"><h3>Synthese-Dossier</h3><p>De rode draad uit alle interviews en bevragingen. Eén gedeelde visie, onderbouwd met data van 6 klantgesprekken en 52 interne respondenten.</p></div>
+          <div class="del-card"><h3>Concept-Trio</h3><p>Drie visueel uitgewerkte conceptrichtingen met renders, processchema's en specificaties. EcoPack, SmartWrap en FlexLine — volledig gedocumenteerd.</p></div>
+          <div class="del-card"><h3>Validatie-Matrix</h3><p>De complete Epic Trade-off resultaten: criteria, gewichten, scores en de transparante redenering achter de conceptkeuze.</p></div>
+          <div class="del-card"><h3>Handover Brief</h3><p>Startpakket voor uw ontwikkelpartner. Geschreven in hun taal, met scherpe specificaties en de visuele basis om direct te starten.</p></div>
+        </div>
+      </div>
+      <div class="locked-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <span>Beschikbaar na afronding Trade-off</span>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ── STEP NAVIGATION ──
+function showStep(n) {
+  document.querySelectorAll('.step-content').forEach(el => el.classList.remove('visible'));
+  document.getElementById('step-' + n).classList.add('visible');
+  document.querySelectorAll('.step-nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector('.step-nav-item[data-step="' + n + '"]').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── TRADE-OFF ENGINE ──
+const concepts = [
+  {
+    name: 'EcoPack — De Groene Lijn',
+    subtitle: 'Duurzaam · materiaalinnovatie · compliance-proof',
+    scores: { haalbaarheid: 6, wenselijkheid: 9, levensvatbaarheid: 7, tijdsdruk: 7, risico: 5 },
+    fill: 'fill-1'
+  },
+  {
+    name: 'SmartWrap — De Slimme Lijn',
+    subtitle: 'IoT · track & trace · snellere levertijd',
+    scores: { haalbaarheid: 7, wenselijkheid: 7, levensvatbaarheid: 8, tijdsdruk: 8, risico: 6 },
+    fill: 'fill-2'
+  },
+  {
+    name: 'FlexLine — De Hybride Lijn',
+    subtitle: 'Modulair · breed inzetbaar · toekomstbestendig',
+    scores: { haalbaarheid: 5, wenselijkheid: 8, levensvatbaarheid: 9, tijdsdruk: 5, risico: 8 },
+    fill: 'fill-3'
+  }
+];
+
+function updateTradeoff() {
+  const sliders = document.querySelectorAll('.criterion-slider input[type=range]');
+  const weights = {};
+  const criteriaNames = ['haalbaarheid', 'wenselijkheid', 'levensvatbaarheid', 'tijdsdruk', 'risico'];
+
+  sliders.forEach((s, i) => {
+    const key = criteriaNames[i];
+    weights[key] = parseInt(s.value);
+    document.getElementById('w-' + key).textContent = s.value;
+  });
+
+  const totalWeight = Object.values(weights).reduce((a, b) => a + b, 0);
+
+  const results = concepts.map((c, idx) => {
+    let score = 0;
+    for (const key in weights) {
+      score += (c.scores[key] / 10) * (weights[key] / totalWeight);
+    }
+    return { ...c, totalScore: Math.round(score * 100), index: idx };
+  });
+
+  results.sort((a, b) => b.totalScore - a.totalScore);
+
+  const resultsHTML = results.map((r, rank) => `
+    <div class="concept-result ${rank === 0 ? 'winner' : ''}">
+      <div class="cr-rank">${rank + 1}</div>
+      <div class="cr-info">
+        <div class="cr-name">${r.name}</div>
+        <div class="cr-subtitle">${r.subtitle}</div>
+      </div>
+      <div class="cr-bar-container">
+        <div class="cr-bar"><div class="cr-bar-fill ${r.fill}" style="width:${r.totalScore}%"></div></div>
+      </div>
+      <div class="cr-score">${r.totalScore}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('tradeoffResults').innerHTML = resultsHTML;
+
+  const detailHTML = concepts.map((c, idx) => `
+    <div class="td-concept">
+      <h4>${c.name.split(' — ')[0]}</h4>
+      <div class="td-scores">
+        ${criteriaNames.map(key => `
+          <div class="td-score-row">
+            <div class="td-score-label">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
+            <div class="td-score-bar"><div class="td-score-fill" style="width:${c.scores[key] * 10}%;background:${idx === 0 ? '#C4841D' : idx === 1 ? '#3A6B9F' : '#3D7C4F'}"></div></div>
+            <div class="td-score-val">${c.scores[key]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('tradeoffDetail').innerHTML = detailHTML;
+}
+
+// Initialize trade-off on load
+updateTradeoff();
+
+// Show step 1 by default
+showStep(1);
+</script>
+
+</body>
+</html>
